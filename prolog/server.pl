@@ -36,7 +36,7 @@ server(Port) :-
 
 game_turn(_Request) :-
     http_in_session(S),
-    json_read_dict(current_input, Payload),
+    json_read_dict(current_input, Payload, [value_string_as(atom)]),
     do_in_chr_thread(new_state(S, Payload),
                      get_chr_response_dict(S, Response)),
     format('Access-Control-Allow-Origin: *~n'),
