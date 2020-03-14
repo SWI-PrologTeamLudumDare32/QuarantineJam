@@ -4,7 +4,8 @@
 <div id="app"></div>
 
 <script>
-let data = null
+  let data = null
+  let oops = ''
 
 const App = {
   view() {
@@ -13,8 +14,8 @@ const App = {
       m('button', {
         onclick: loadDoc
       }, 'buy cow'),
-
-      data && m('pre', JSON.stringify(data, undefined, 2))
+      data && m('pre', JSON.stringify(data, undefined, 2)),
+      oops && m('pre', oops)
     )
   }
 }
@@ -27,6 +28,7 @@ async function loadDoc() {
   })
 
   data = response.result
+  oops = response.error
 }
 
 m.mount(document.getElementById('app'), App)
