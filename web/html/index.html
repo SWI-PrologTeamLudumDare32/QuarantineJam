@@ -4,30 +4,49 @@
 <div id="app"></div>
 
 <script>
-  let data = null
+  let state = null
   let oops = ''
 
 const App = {
   view() {
     return m('div',
       m('h2', 'The XMLHttpRequest Object'),
+
       m('button', {
-        onclick: loadDoc
+        onclick() { gameTurn({ add: ['cow'] , remove: ['money'] }) }
       }, 'buy cow'),
-      data && m('pre', JSON.stringify(data, undefined, 2)),
+
+      m('button', {
+        onclick() { gameTurn({ end_turn: true }) }
+      }, 'end turn'),
+
+      state && [
+        m('pre', JSON.stringify(state.items, undefined, 2)),
+        m('pre', JSON.stringify(state.env, undefined, 2))
+      ],
       oops && m('pre', oops)
     )
   }
 }
 
-async function loadDoc() {
+async function gameTurn(body) {
   const response = await m.request({
     method: 'POST',
     url: '/game_turn',
-    body: { add: ['cow'] , remove: ['money']}
+    body: {
+      add: body.add || [],
+      remove: body.remove || [],
+      end_turn: body.end_turn ? 1 : 0,
+    },
   })
 
-  data = response.result
+  state = {
+    items: response.result,
+    env: response.env.reduce((hash, [key, value]) => {
+      hash[key] = value
+      return hash
+    }, {})
+  }
   oops = response.error
 }
 

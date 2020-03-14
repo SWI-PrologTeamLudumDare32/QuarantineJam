@@ -27,11 +27,20 @@ server(Port) :-
     thing/2,
     make_player_inited/1,
     inited/1,
+
     collect_things/2,
     thing_to_collect/2,
     all_things/2,
+
+    collect_env/2,
+    env_to_collect/3,
+    all_env/2,
+
     add_thing/2,
     remove_thing/2,
+    env/3,
+    time_passing/1,
+    time_event/2,
     error/3,
     collect_errors/3.
 
@@ -53,15 +62,21 @@ game_turn(Request) :-
 new_state(S, Payload) :-
     make_player_inited(S),
     _{  add: List,
-        remove: RemoveList
+        remove: RemoveList,
+        end_turn: EndTurn
      }  :< Payload,
-    maplist(remove_thing(S), RemoveList),
-    maplist(add_thing(S), List).
+    (
+        EndTurn = 1 -> time_passing(S);
+        maplist(remove_thing(S), RemoveList),
+        maplist(add_thing(S), List)
+    ).
 
 get_chr_response_dict(S, Response) :-
+    collect_env(S, Env),
     collect_things(S, Results),
     collect_errors(S, "",  ErrStr),
     Response = _{
+                   env: Env,
                    result: Results,
                    error: ErrStr
                }.
@@ -73,6 +88,14 @@ thing_to_collect(S, Name), all_things(S, L) <=>
          L = [Name |L1],
          all_things(S, L1).
 all_things(_, L) <=> L = [].
+
+collect_env(S, _), env(S, Key, Value) ==> env_to_collect(S, Key, Value).
+collect_env(S, L) <=> all_env(S, L).
+
+env_to_collect(S, Key, Value), all_env(S, L) <=>
+         L = [[Key,Value] |L1],
+         all_env(S, L1).
+all_env(_, L) <=> L = [].
 
 collect_errors(S, SoFar, Ret), error(S, Fmt, Vars) <=>
          format(string(Str), Fmt, Vars),
@@ -100,6 +123,11 @@ remove_thing(S, Name) <=> error(S, 'we\'d love to sell the ~w but we don\'t have
 thing(S, Name) <=> \+ known_thing(Name) |
                    error(S, '~w is not a known thing', [Name]).
 
+% End game turn logic
+time_passing(S) ==> time_event(S, tick).
+
+time_event(S, tick), env(S, time, T0) <=> T is T0 + 1, env(S, time, T).
+
 		 /*******************************
 		 *              Game Logic      *
 		 *******************************/
@@ -108,6 +136,7 @@ thing(S, Name) <=> \+ known_thing(Name) |
 %
 chr_reset(S) \ thing(S, _) <=> true.
 chr_reset(S) <=>
+    env(S, time, 1),
     thing(S, field),
     thing(S, house),
     thing(S, money),
