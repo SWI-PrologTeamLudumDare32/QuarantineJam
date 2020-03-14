@@ -50,5 +50,7 @@ tick <=> cleanup.
 
 cleanup \ tapped(X) <=> call(X).
 cleanup \ worker(_, hungry) <=> true.
+cleanup \ worker(_, fed) <=> true.
+cleanup \ building(_, _, dormant) <=> true.
 cleanup \ building(_, _, active) <=> true.
 cleanup <=> true.
