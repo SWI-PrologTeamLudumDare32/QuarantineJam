@@ -1,10 +1,19 @@
-:- module(game, []).
+:- module(game, [known_thing/1]).
 
 %
 % Sample query:
 % worker(farmer,hired), worker(farmer,hired), building(farm, 10, built), item(food), item(food), cow(20, 0, 10), tick.
 %
 :- use_module(library(chr)).
+
+known_thing(chicken).
+known_thing(cow).
+known_thing(field).
+known_thing(duck).
+known_thing(tractor).
+known_thing(house).
+known_thing(money).
+
 :- chr_constraint
   % Player actions
   harvest/1,

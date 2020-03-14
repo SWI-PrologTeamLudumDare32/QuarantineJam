@@ -15,7 +15,7 @@ const App = {
       m('h2', 'The XMLHttpRequest Object'),
       m('button', {
         onclick: loadDoc
-      }, 'Change Content'),
+      }, 'buy cow'),
     )
   }
 }
@@ -24,7 +24,7 @@ async function loadDoc() {
   const response = await m.request({
     method: 'POST',
     url: '/game_turn',
-    body: { add: ['salt', 'water'] }
+    body: { add: ['cow'] , remove: ['money']}
   })
 
   data = response.result

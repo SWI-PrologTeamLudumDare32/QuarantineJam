@@ -6,6 +6,7 @@
 :- use_module(library(http/http_session)).
 :- use_module(library(http/http_files)).
 :- use_module(library(http/http_json)).
+:- use_module(game).
 
 go :- server(8888).
 
@@ -29,6 +30,7 @@ server(Port) :-
     collect_things/2,
     thing_to_collect/2,
     all_things/2,
+    add_thing/2,
     remove_thing/2,
     error/3,
     collect_errors/3.
@@ -78,13 +80,6 @@ collect_errors(S, SoFar, Ret), error(S, Fmt, Vars) <=>
          collect_errors(S, NewSoFar, Ret).
 collect_errors(_, SoFar, Ret) <=> SoFar = Ret.
 
-% reset to the start of game state. Not same as make_player_inited
-% which establishes initial conditions when session first seen
-%
-chr_reset(S) \ thing(S, _) <=> true.
-chr_reset(S) <=>
-    thing(S, salt),
-    thing(S, water).
 
 inited(S) \ make_player_inited(S) <=> true.
 make_player_inited(S) <=>
@@ -93,20 +88,36 @@ make_player_inited(S) <=>
 
 inited(S) \ inited(S) <=> true.
 
-% prolog so we're not subject to CHR injection attacks
-add_thing(S, Name) :-
-    thing(S, Name).
 
+error(S, _, _) \ add_thing(S, _) <=> true.  % ignore adds when errored
+add_thing(S, Name) <=> thing(S, Name).
+
+error(S, _, _) \ remove_thing(S, _) <=> true. % ignore further removes when errored
 remove_thing(S, Name), thing(S, Name) <=> true.
 remove_thing(S, Name) <=> error(S, 'we\'d love to sell the ~w but we don\'t have one', [Name]).
 
 
+thing(S, Name) <=> \+ known_thing(Name) |
+                   error(S, '~w is not a known thing', [Name]).
+
 		 /*******************************
 		 *              Game Logic      *
 		 *******************************/
+% reset to the start of game state. Not same as make_player_inited
+% which establishes initial conditions when session first seen
+%
+chr_reset(S) \ thing(S, _) <=> true.
+chr_reset(S) <=>
+    thing(S, field),
+    thing(S, house),
+    thing(S, money),
+    thing(S, money),
+    thing(S, money),
+    thing(S, money),
+    thing(S, money),
+    thing(S, money),
+    thing(S, money).
 
-    Response = _{
-thing(S, salt), thing(S, water) <=> thing(S, salt_water).
 
 		 /*******************************
 		 * Debug help                   *
