@@ -3,14 +3,12 @@
 
 :- use_module(library(http/thread_httpd)).
 :- use_module(library(http/http_dispatch)).
-:- use_module(library(http/http_parameters)).
 :- use_module(library(chr)).
 :- use_module(library(http/http_session)).
-:- use_module(library(http/json)).
+:- use_module(library(http/http_files)).
+:- use_module(library(http/http_json)).
 
-
-go :- server(8888),
-    prolog_ide(thread_monitor).
+go :- server(8888).
 
 %!  server(+Port)
 %
@@ -21,6 +19,8 @@ server(Port) :-
     http_server(http_dispatch,
                 [ port(Port)
                 ]).
+
+:- http_handler('/static/', http_reply_from_files('../web/html/', []), [prefix]).
 
 :- chr_constraint
     chr_reset/1,
@@ -34,14 +34,13 @@ server(Port) :-
 
 :- http_handler('/game_turn', game_turn , []).
 
-game_turn(_Request) :-
+game_turn(Request) :-
     http_in_session(S),
-    json_read_dict(current_input, Payload, [value_string_as(atom)]),
+    http_read_json_dict(Request, Payload, [value_string_as(atom)]),
     do_in_chr_thread(new_state(S, Payload),
                      get_chr_response_dict(S, Response)),
     format('Access-Control-Allow-Origin: *~n'),
-    format('Content-type: application/json~n~n'),
-    json_write_dict(current_output, Response).
+    reply_json_dict(Response).
 
 		 /*******************************
 		 *          Game Logic          *
