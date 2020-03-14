@@ -41,7 +41,7 @@ game_turn(Request) :-
     reply_json_dict(Response).
 
 		 /*******************************
-		 *          Game Logic          *
+		 *   Overall Game Logic          *
 		 *******************************/
 
 new_state(S, Payload) :-

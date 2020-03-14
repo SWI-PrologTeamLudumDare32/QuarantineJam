@@ -1,3 +1,5 @@
+:- module(game, []).
+
 %
 % Sample query:
 % worker(farmer,hired), worker(farmer,hired), building(farm, 10, built), item(food), item(food), cow(20, 0, 10), tick.
@@ -15,6 +17,7 @@
   tick/0, tapped/1, cleanup/0.
 
 %
+
 % Building Bonuses
 %
 worker(Type, hired) ==> worker(Type, hungry).
