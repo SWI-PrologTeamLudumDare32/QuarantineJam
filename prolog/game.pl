@@ -15,7 +15,7 @@
   tick/0, tapped/1, cleanup/0.
 
 %
-% Building Bonuses
+% Worker & Building Requirements
 %
 worker(Type, hired) ==> worker(Type, hungry).
 building(Type, Id, built) ==> building(Type, Id, dormant).
