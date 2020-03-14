@@ -12,13 +12,12 @@
   worker/2,
   building/3,
   cow/3,
+  meat/0,
   item/1,
   % Engine
   tick/0, tapped/1, cleanup/0.
 
-%
-
-% Building Bonuses
+% Worker & Building Requirements
 %
 worker(Type, hired) ==> worker(Type, hungry).
 building(Type, Id, built) ==> building(Type, Id, dormant).
@@ -53,5 +52,7 @@ tick <=> cleanup.
 
 cleanup \ tapped(X) <=> call(X).
 cleanup \ worker(_, hungry) <=> true.
+cleanup \ worker(_, fed) <=> true.
+cleanup \ building(_, _, dormant) <=> true.
 cleanup \ building(_, _, active) <=> true.
 cleanup <=> true.

@@ -23,12 +23,16 @@ server(Port) :-
 
 :- chr_constraint
     chr_reset/1,
-    reagent/2,
+    thing/2,
     make_player_inited/1,
     inited/1,
-    collect_reagents/2,
-    reagent_to_collect/2,
-    all_reagents/2.
+    collect_things/2,
+    thing_to_collect/2,
+    all_things/2,
+    remove_thing/2,
+    error/3,
+    collect_errors/3.
+
 
 :- http_handler('/game_turn', game_turn , []).
 
@@ -46,31 +50,41 @@ game_turn(Request) :-
 
 new_state(S, Payload) :-
     make_player_inited(S),
-    _{  add: List
+    _{  add: List,
+        remove: RemoveList
      }  :< Payload,
-    maplist(add_reagent(S), List).
+    maplist(remove_thing(S), RemoveList),
+    maplist(add_thing(S), List).
 
 get_chr_response_dict(S, Response) :-
-    collect_reagents(S, Results),
+    collect_things(S, Results),
+    collect_errors(S, "",  ErrStr),
     Response = _{
-                   result: Results
+                   result: Results,
+                   error: ErrStr
                }.
 
-collect_reagents(S, _), reagent(S, Name) ==> reagent_to_collect(S, Name).
-collect_reagents(S, L) <=> all_reagents(S, L).
+collect_things(S, _), thing(S, Name) ==> thing_to_collect(S, Name).
+collect_things(S, L) <=> all_things(S, L).
 
-reagent_to_collect(S, Name), all_reagents(S, L) <=>
+thing_to_collect(S, Name), all_things(S, L) <=>
          L = [Name |L1],
-         all_reagents(S, L1).
-all_reagents(_, L) <=> L = [].
+         all_things(S, L1).
+all_things(_, L) <=> L = [].
+
+collect_errors(S, SoFar, Ret), error(S, Fmt, Vars) <=>
+         format(string(Str), Fmt, Vars),
+         string_concat(SoFar, Str, NewSoFar),
+         collect_errors(S, NewSoFar, Ret).
+collect_errors(_, SoFar, Ret) <=> SoFar = Ret.
 
 % reset to the start of game state. Not same as make_player_inited
 % which establishes initial conditions when session first seen
 %
-chr_reset(S) \ reagent(S, _) <=> true.
+chr_reset(S) \ thing(S, _) <=> true.
 chr_reset(S) <=>
-    reagent(S, salt),
-    reagent(S, water).
+    thing(S, salt),
+    thing(S, water).
 
 inited(S) \ make_player_inited(S) <=> true.
 make_player_inited(S) <=>
@@ -80,14 +94,19 @@ make_player_inited(S) <=>
 inited(S) \ inited(S) <=> true.
 
 % prolog so we're not subject to CHR injection attacks
-add_reagent(S, Name) :-
-    reagent(S, Name).
+add_thing(S, Name) :-
+    thing(S, Name).
+
+remove_thing(S, Name), thing(S, Name) <=> true.
+remove_thing(S, Name) <=> error(S, 'we\'d love to sell the ~w but we don\'t have one', [Name]).
+
 
 		 /*******************************
 		 *              Game Logic      *
 		 *******************************/
 
-reagent(S, salt), reagent(S, water) <=> reagent(S, salt_water).
+    Response = _{
+thing(S, salt), thing(S, water) <=> thing(S, salt_water).
 
 		 /*******************************
 		 * Debug help                   *
