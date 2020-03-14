@@ -1,67 +1,119 @@
-:- module(game, [known_thing/1]).
+:- module(game, [
+    collect_env/2,
+    collect_things/2,
+    collect_available_actions/2,
+    collect_errors/3,
+    make_player_inited/1,
+    known_action/1,
+    error/3,
+    act/2
+  ]).
 
-%
-% Sample query:
-% worker(farmer,hired), worker(farmer,hired), building(farm, 10, built), item(food), item(food), cow(20, 0, 10), tick.
-%
 :- use_module(library(chr)).
 
-known_thing(chicken).
-known_thing(cow).
-known_thing(field).
-known_thing(duck).
-known_thing(tractor).
-known_thing(house).
-known_thing(money).
-
 :- chr_constraint
-  % Player actions
-  harvest/1,
-  % Resources
-  worker/2,
-  building/3,
-  cow/3,
-  meat/0,
-  item/1,
-  % Engine
-  tick/0, tapped/1, cleanup/0.
+  chr_reset/1,
+  thing/2,
+  make_player_inited/1,
+  inited/1,
 
-% Worker & Building Requirements
-%
-worker(Type, hired) ==> worker(Type, hungry).
-building(Type, Id, built) ==> building(Type, Id, dormant).
+  act/2,
+  available_action/2,
 
-worker(farmer, hungry), item(food) <=> worker(farmer, fed).
-worker(villager, hungry), item(food) <=> worker(villager, fed).
+  collect_things/2,
+  thing_to_collect/2,
+  all_things/2,
 
-building(farm, Id, dormant), worker(farmer, fed), worker(farmer, fed)
-<=> building(farm, Id, active).
+  collect_available_actions/2,
+  available_action_to_collect/2,
+  all_available_actions/2,
+
+  collect_env/2,
+  env_to_collect/3,
+  all_env/2,
+
+  env/3,
+  time_passing/1,
+  time_event/2,
+  error/3,
+  collect_errors/3.
 
 %
 % Player Actions
 %
-harvest(Cow), cow(Cow, _, _) <=> meat, meat, meat, meat.
+known_action(buy_cow).
+known_action(end_turn).
+
+act(S, buy_cow), thing(S, money) <=> thing(S, cow).
+act(S, buy_cow) <=> error(S, 'we\'d love to sell a cow but we don\'t have one', []).
 
 %
-% Resource Farming
+% End turn game logic
 %
-% Cows yield milk every 5 ticks
-tick \ cow(Cow, 0, Farm), building(farm, Farm, active)
-<=>
-  tapped(cow(Cow, 4, Farm)),
-  item(food).
+act(S, end_turn) <=> time_passing(S).
 
-% If it's not time to yield, just count down by 1.
-tick \ cow(Cow, N0, Farm) <=> N is N0 - 1, tapped(cow(Cow, N, Farm)).
+time_passing(S) ==> time_event(S, tick).
+
+time_event(S, tick), env(S, time, T0) <=> T is T0 + 1, env(S, time, T).
+
+
+% reset to the start of game state. Not same as make_player_inited
+% which establishes initial conditions when session first seen
+%
+chr_reset(S) \ thing(S, _) <=> true.
+chr_reset(S) <=>
+    available_action(S, buy_cow),
+    available_action(S, end_turn),
+    env(S, time, 1),
+    thing(S, field),
+    thing(S, house),
+    thing(S, money),
+    thing(S, money),
+    thing(S, money),
+    thing(S, money),
+    thing(S, money),
+    thing(S, money),
+    thing(S, money).
 
 %
-% Engine
+%  Data manipulation
 %
-tick <=> cleanup.
+collect_things(S, _), thing(S, Name) ==> thing_to_collect(S, Name).
+collect_things(S, L) <=> all_things(S, L).
 
-cleanup \ tapped(X) <=> call(X).
-cleanup \ worker(_, hungry) <=> true.
-cleanup \ worker(_, fed) <=> true.
-cleanup \ building(_, _, dormant) <=> true.
-cleanup \ building(_, _, active) <=> true.
-cleanup <=> true.
+thing_to_collect(S, Name), all_things(S, L) <=>
+         L = [Name |L1],
+         all_things(S, L1).
+all_things(_, L) <=> L = [].
+
+
+collect_available_actions(S, _), available_action(S, Name) ==> available_action_to_collect(S, Name).
+collect_available_actions(S, L) <=> all_available_actions(S, L).
+
+available_action_to_collect(S, Name), all_available_actions(S, L) <=>
+         L = [Name |L1],
+         all_available_actions(S, L1).
+all_available_actions(_, L) <=> L = [].
+
+
+collect_env(S, _), env(S, Key, Value) ==> env_to_collect(S, Key, Value).
+collect_env(S, L) <=> all_env(S, L).
+
+env_to_collect(S, Key, Value), all_env(S, L) <=>
+         L = [[Key,Value] |L1],
+         all_env(S, L1).
+all_env(_, L) <=> L = [].
+
+collect_errors(S, SoFar, Ret), error(S, Fmt, Vars) <=>
+         format(string(Str), Fmt, Vars),
+         string_concat(SoFar, Str, NewSoFar),
+         collect_errors(S, NewSoFar, Ret).
+collect_errors(_, SoFar, Ret) <=> SoFar = Ret.
+
+
+inited(S) \ make_player_inited(S) <=> true.
+make_player_inited(S) <=>
+    game:chr_reset(S),
+    inited(S).
+
+inited(S) \ inited(S) <=> true.
