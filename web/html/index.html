@@ -8,14 +8,13 @@ let data = null
 
 const App = {
   view() {
-    if (data) {
-      return m('pre', JSON.stringify(data))
-    }
     return m('div',
       m('h2', 'The XMLHttpRequest Object'),
       m('button', {
         onclick: loadDoc
       }, 'buy cow'),
+
+      data && m('pre', JSON.stringify(data, undefined, 2))
     )
   }
 }
