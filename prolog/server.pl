@@ -1,6 +1,5 @@
 :- module(server, [go/0]).
 
-
 :- use_module(library(http/thread_httpd)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(chr)).
@@ -30,7 +29,6 @@ server(Port) :-
     collect_reagents/2,
     reagent_to_collect/2,
     all_reagents/2.
-
 
 :- http_handler('/game_turn', game_turn , []).
 
@@ -84,6 +82,10 @@ inited(S) \ inited(S) <=> true.
 % prolog so we're not subject to CHR injection attacks
 add_reagent(S, Name) :-
     reagent(S, Name).
+
+		 /*******************************
+		 *              Game Logic      *
+		 *******************************/
 
 reagent(S, salt), reagent(S, water) <=> reagent(S, salt_water).
 
