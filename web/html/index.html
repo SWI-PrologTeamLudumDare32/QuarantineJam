@@ -38,7 +38,7 @@ async function act(action) {
 
   state = {
     things: response.things.reduce((hash, [name, id]) => {
-      hash[id] = name
+      hash[id] = { name: name, status: {} }
       return hash
     }, {}),
     assets: response.assets.reduce((hash, [name, amount]) => {
@@ -51,6 +51,9 @@ async function act(action) {
     }, {}),
     actions: response.available_actions,
   }
+  response.statuses.forEach(([id, name, value]) => {
+    state.things[id].status[name] = value
+  })
   oops = response.error
 }
 
