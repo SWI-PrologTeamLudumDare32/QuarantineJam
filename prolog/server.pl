@@ -20,7 +20,15 @@ server(Port) :-
                 [ port(Port)
                 ]).
 
-:- http_handler('/static/', http_reply_from_files('../web/html/', []), [prefix]).
+:- http_handler('/', http_reply_file('../web/html/index.html', []), []).
+
+:- http_handler('/static/html/', http_reply_from_files('../web/html/', []), [prefix]).
+
+:- http_handler('/static/svg/', http_reply_from_files('../web/svg/', []), [prefix]).
+
+:- http_handler('/static/js/', http_reply_from_files('../web/js/', []), [prefix]).
+
+:- http_handler('/static/font/', http_reply_from_files('../web/fonts/', []), [prefix]).
 
 :- http_handler('/game_turn', game_turn , []).
 
