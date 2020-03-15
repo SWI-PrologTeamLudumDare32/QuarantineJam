@@ -1,10 +1,8 @@
 <!DOCTYPE html>
+<link rel="stylesheet" href="./reset.css">
+<link rel="stylesheet" href="./game.css">
 <script src="/static/js/vendor/mithril-2.0.4.js"></script>
-<object data="/static/svg/pagelayout.svg" type="image/svg+xml">
-  <p>You need to support SVG Graphics (any modern browser should do this)</p>
-</object>
 
-<hr />
 <div id="app"></div>
 
 <script>
@@ -16,20 +14,23 @@ const App = {
     if (!state) {
       return m('div', 'Loading...')
     }
-    return m('div',
-      m('h2', 'The Text Farmer'),
+    return [
+      m('.desktop',
+        m('.side',
+          m('.report-letter'),
+        ),
+        m('.side',
+          m('.inventory-letter'),
+        ),
 
-      state.actions.map(action =>
-        m('button', {
-          onclick() { act(action) }
-        }, action),
+        m('.decoration.decoration-photo',
+          m('img[src=/static/img/desktop/oldcamper.jpg]')
+        ),
+        m('.decoration.decoration-drink',
+          m('img[src=/static/img/desktop/wineglass.png]')
+        )
       ),
-
-      m('pre', JSON.stringify(state.things, undefined, 2)),
-      m('pre', JSON.stringify(state.assets, undefined, 2)),
-      m('pre', JSON.stringify(state.env, undefined, 2)),
-      oops && m('pre', oops)
-    )
+    ]
   }
 }
 

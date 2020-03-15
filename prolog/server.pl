@@ -26,6 +26,8 @@ server(Port) :-
 
 :- http_handler('/static/svg/', http_reply_from_files('../web/svg/', []), [prefix]).
 
+:- http_handler('/static/img/', http_reply_from_files('../web/img/', []), [prefix]).
+
 :- http_handler('/static/js/', http_reply_from_files('../web/js/', []), [prefix]).
 
 :- http_handler('/static/font/', http_reply_from_files('../web/fonts/', []), [prefix]).
