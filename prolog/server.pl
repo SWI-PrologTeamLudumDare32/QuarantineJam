@@ -128,6 +128,8 @@ time_passing(S) ==> time_event(S, tick).
 
 time_event(S, tick), env(S, time, T0) <=> T is T0 + 1, env(S, time, T).
 
+time_passing(_) <=> true.
+
 		 /*******************************
 		 *              Game Logic      *
 		 *******************************/
