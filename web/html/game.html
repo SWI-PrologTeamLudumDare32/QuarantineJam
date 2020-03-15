@@ -17,10 +17,16 @@ const App = {
     return [
       m('.desktop',
         m('.side',
-          m('.report-letter'),
+          m('.report-letter',
+          ),
         ),
         m('.side',
-          m('.inventory-letter'),
+          m('.inventory-letter',
+            m('h2', 'Inventory'),
+            m('ul', state.inventory.map(row =>
+              m('li', `${row.cnt} ${row.item} (${row.status})`)
+            ))
+          ),
         ),
 
         m('.decoration.decoration-photo',
@@ -35,31 +41,11 @@ const App = {
 }
 
 async function act(action) {
-  const response = await m.request({
+  state = await m.request({
     method: 'POST',
     url: '/game_turn',
     body: { action },
   })
-
-  state = {
-    things: response.things.reduce((hash, [name, id]) => {
-      hash[id] = { name: name, status: {} }
-      return hash
-    }, {}),
-    assets: response.assets.reduce((hash, [name, amount]) => {
-      hash[name] = amount
-      return hash
-    }, {}),
-    env: response.env.reduce((hash, [key, value]) => {
-      hash[key] = value
-      return hash
-    }, {}),
-    actions: response.available_actions,
-  }
-  response.statuses.forEach(([id, name, value]) => {
-    state.things[id].status[name] = value
-  })
-  oops = response.error
 }
 
 act('get_state')
