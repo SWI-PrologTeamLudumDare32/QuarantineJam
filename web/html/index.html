@@ -9,46 +9,52 @@
 
 const App = {
   view() {
+    if (!state) {
+      return m('div', 'Loading...')
+    }
     return m('div',
-      m('h2', 'The XMLHttpRequest Object'),
+      m('h2', 'The Text Farmer'),
 
-      m('button', {
-        onclick() { gameTurn({ add: ['cow'] , remove: ['money'] }) }
-      }, 'buy cow'),
+      state.actions.map(action =>
+        m('button', {
+          onclick() { act(action) }
+        }, action),
+      ),
 
-      m('button', {
-        onclick() { gameTurn({ end_turn: true }) }
-      }, 'end turn'),
-
-      state && [
-        m('pre', JSON.stringify(state.items, undefined, 2)),
-        m('pre', JSON.stringify(state.env, undefined, 2))
-      ],
+      m('pre', JSON.stringify(state.things, undefined, 2)),
+      m('pre', JSON.stringify(state.assets, undefined, 2)),
+      m('pre', JSON.stringify(state.env, undefined, 2)),
       oops && m('pre', oops)
     )
   }
 }
 
-async function gameTurn(body) {
+async function act(action) {
   const response = await m.request({
     method: 'POST',
     url: '/game_turn',
-    body: {
-      add: body.add || [],
-      remove: body.remove || [],
-      end_turn: body.end_turn ? 1 : 0,
-    },
+    body: { action },
   })
 
   state = {
-    items: response.result,
+    things: response.things.reduce((hash, [name, id]) => {
+      hash[id] = name
+      return hash
+    }, {}),
+    assets: response.assets.reduce((hash, [name, amount]) => {
+      hash[name] = amount
+      return hash
+    }, {}),
     env: response.env.reduce((hash, [key, value]) => {
       hash[key] = value
       return hash
-    }, {})
+    }, {}),
+    actions: response.available_actions,
   }
   oops = response.error
 }
+
+act('get_state')
 
 m.mount(document.getElementById('app'), App)
 </script>
