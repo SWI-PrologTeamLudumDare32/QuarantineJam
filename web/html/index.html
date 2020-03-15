@@ -21,7 +21,8 @@ const App = {
         }, action),
       ),
 
-      m('pre', JSON.stringify(state.items, undefined, 2)),
+      m('pre', JSON.stringify(state.things, undefined, 2)),
+      m('pre', JSON.stringify(state.assets, undefined, 2)),
       m('pre', JSON.stringify(state.env, undefined, 2)),
       oops && m('pre', oops)
     )
@@ -36,7 +37,14 @@ async function act(action) {
   })
 
   state = {
-    items: response.result,
+    things: response.things.reduce((hash, [name, id]) => {
+      hash[id] = name
+      return hash
+    }, {}),
+    assets: response.assets.reduce((hash, [name, amount]) => {
+      hash[name] = amount
+      return hash
+    }, {}),
     env: response.env.reduce((hash, [key, value]) => {
       hash[key] = value
       return hash

@@ -46,16 +46,7 @@ new_state(S, Payload) :-
     ).
 
 get_chr_response_dict(S, Response) :-
-    game:collect_env(S, Env),
-    game:collect_things(S, Results),
-    game:collect_errors(S, "",  ErrStr),
-    game:collect_available_actions(S, Actions),
-    Response = _{
-                   env: Env,
-                   result: Results,
-                   available_actions: Actions,
-                   error: ErrStr
-               }.
+    game:get_state(S, Response).
 
 		 /*******************************
 		 * Debug help                   *
@@ -74,7 +65,7 @@ debug_constraints(_).
 create_chr_thread :-
    message_queue_create(_, [ alias(sub) ]),
    message_queue_create(_, [ alias(par) ]),
-   thread_create(polling_sub, _, [ alias(chr),
+   thread_create((init_global, polling_sub), _, [ alias(chr),
            at_exit(debug(lines, 'CHR thread exited', []))]).
 
 polling_sub :-
