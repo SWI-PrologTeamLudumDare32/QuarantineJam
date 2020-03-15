@@ -18,6 +18,8 @@
   thing/3,
   asset/3,
   new_thing/2,
+  new_thing/3,
+  new_status/3,
   make_player_inited/1,
   inited/1,
 
@@ -91,13 +93,18 @@ chr_reset(S) <=>
     asset(S, money, 100),
     new_thing(S, field),
     new_thing(S, house),
+    new_thing(S, cow, [sick-true]),
     available_action(S, buy_cow),
     available_action(S, end_turn).
 
-new_thing(S, Type), id_counter(NewId) <=>
+new_thing(S, Type) <=> new_thing(S, Type, []).
+new_thing(S, Type, Statuses), id_counter(NewId) <=>
   NextId is NewId + 1,
   thing(S, Type, NewId),
-  id_counter(NextId).
+  id_counter(NextId),
+  maplist(new_status(S, NewId), Statuses).
+
+new_status(S, Id, Name-Value) <=> status(S, Id, Name, Value).
 
 %
 %  Data manipulation
@@ -106,12 +113,14 @@ get_state(S, State) :-
   collect_env(S, Env),
   collect_things(S, Things),
   collect_assets(S, Assets),
+  collect_status(S, Statuses),
   collect_errors(S, "",  ErrStr),
   collect_available_actions(S, Actions),
   State = _{
     env: Env,
     things: Things,
     assets: Assets,
+    statuses: Statuses,
     available_actions: Actions,
     error: ErrStr
   }.
