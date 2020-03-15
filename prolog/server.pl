@@ -30,6 +30,8 @@ server(Port) :-
 
 :- http_handler('/static/font/', http_reply_from_files('../web/fonts/', []), [prefix]).
 
+:- http_handler('/static/image/', http_reply_from_files('../web/image/', []), [prefix]).
+
 :- http_handler('/game_turn', game_turn , []).
 
 game_turn(Request) :-
@@ -44,7 +46,10 @@ game_turn(Request) :-
 		 *   Overall Game Logic          *
 		 *******************************/
 
+stub_mode.
+
 new_state(S, Payload) :-
+    \+ stub_mode,
     make_player_inited(S),
     _{ action: Action }  :< Payload,
     (
@@ -52,9 +57,75 @@ new_state(S, Payload) :-
         game:known_action(Action) -> game:act(S, Action);
         game:error(S, "invalid_action", [])
     ).
+new_state(_, _) :-
+    stub_mode.
 
 get_chr_response_dict(S, Response) :-
+    \+ stub_mode,
     game:get_state(S, Response).
+get_chr_response_dict(_, Response) :-
+    stub_mode,
+    random_permutation([
+                       _{ action: buy_cow,
+                          letter:
+                          ["Dear Priscilla;",
+                           "I suggest you buy a cow for $500",
+                           "Sincerely",
+                            "Annette"]
+                        },
+                       _{ action: sell_cow,
+                          letter:
+                          ["Dear Priscilla;",
+                           "I suggest you sell your cow",
+                           "It should fetch about $300",
+                           "Sincerely",
+                            "Annette"]
+                        },
+                       _{ action: time_pass,
+                          letter:
+                          ["Dear Priscilla;",
+                           "Tom brought me flowers today.",
+                           "He\s so romantic!",
+                           "Hope things are going well for you",
+                           "Sincerely",
+                            "Annette"]
+                        }
+                   ], Annette),
+    random_member(Priscilla,
+                  [
+                      ["June 2020", "We live in a trailer and eat canned beans",
+                    "I\'m clueless about this stuff. Please help us.",
+                    "love,",
+                    "Priscilla"],
+                      ["November 2020",
+                       "Thanks for all your help. We were sure lost when we started.",
+                       "Do I have to feed the chickens something? They seem sickly.",
+                    "love,",
+                    "Priscilla"],
+                      ["June 2022",
+                       "Thanks for all your help. We were sure lost when we started. Remember when I tried to feed the cow Frosted Flakes?",
+                       "The goat died.",
+                    "love,",
+                    "Priscilla"]
+                  ]),
+    random_permutation([
+        _{ item: chickens, cnt:42, status: well },
+        _{ item: chickens, cnt:42, status: sick },
+        _{ item: trailer, cnt: 1 , status: 'run down'},
+        _{ item: field, cnt: 1, status: 'planted in wheat, due to harvest in July'},
+        _{ item: 'wine press', cnt: 1, status: ok }], Inv),
+    append(Inv, [_{ item: money, cnt: 14000, status: ok}], Inventory),
+    random_member(Pic, [
+               '/static/image/truck.jpg',
+               '/static/image/turkeys.jpg',
+               '/static/image/tractor.jpg']),
+    Response = _{
+                   priscilla: Priscilla,
+                   annette: Annette,
+                   image: Pic,
+                   inventory: Inventory
+               }.
+
 
 		 /*******************************
 		 * Debug help                   *

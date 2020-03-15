@@ -95,6 +95,7 @@ And it gives the URL for the new image.
 - Make the text flow properly in these boxes. It looks like SVG will do this for us - Inkscape makes a flowroot, then within that a flowregion and flowparagraph s. If not, we can do it on
 the server side, but writi
 - make the image load
+- turn index.html into and instructions and intro page
 
 ### Back end
 
