@@ -8,12 +8,16 @@
 <script>
   let state = null
   let oops = ''
+  let choiceIndex = 0
 
 const App = {
   view() {
     if (!state) {
       return m('div', 'Loading...')
     }
+
+    const choice = state.annette[choiceIndex]
+
     return [
       m('.desktop-wrap', m('.desktop',
         m('.side',
@@ -46,6 +50,15 @@ const App = {
           m('img[src=/static/img/desktop/checkbook.png]')
         ),
       )),
+
+      m('.player-controls',
+        m('.typewriter',
+          m('.response-letter-wrap',
+            m('.response-letter', choice.letter.concat(choice.letter).map(p => m('p', p))),
+          ),
+          m('.typewriter-overlay'),
+        )
+      )
     ]
   }
 }
