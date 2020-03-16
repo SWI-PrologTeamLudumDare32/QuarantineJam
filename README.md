@@ -61,7 +61,7 @@ Priscilla sends you letters asking for advice, often including pictures.
 The top portion of the game shows Priscilla's desk, with the letter she's just written
 to Annette, and the bottom shows Annette's typewriter. (Really indicative of their
 personalities - Priscilla's in some fantasy 'winery owner' space with hand written notes,
-and Annette makes short, businesslike replies. 
+and Annette makes short, businesslike replies.
 
 There are 3 buttons. Two are arrows that cycle through the possible responses from Annette.
 One is a 'send this' button.  They're wired to the right and left arrows and the enter key.
@@ -120,4 +120,6 @@ Karumbi
 monospace
 sans-serif
 
+## Misc Credits
 
+- Typewriter photo by Katrin Hauf on Unsplash
