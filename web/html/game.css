@@ -186,6 +186,7 @@ img {
 .player-input {
     margin-top: -14rem;
     z-index: 9;
+}
 
 .player-input > .controls {
   margin-top: 30px;

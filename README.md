@@ -81,9 +81,25 @@ It shows Priscilla's next letter.
 
 And it gives the URL for the new image.
 
+## Status
+
+Annie - I reworked Gilbert's 'status' so every thing has a single status, which is a term.
+Since statuses are in a per-type namespace anyway (you can't have a broken_down goat),
+assets are gone, and instead the status of money is just the amount.
+I suppose chickens could be  counts(3, 5) (3 well, 5 sick) or a cow could be 
+gravid(42) (due to give birth on turn 42).
+
 ## Known Tasks
 
 ### Front end
+
+- Gilbert wisely scrapped the svg front end, we weren't making progress solving the firefox/safari bug
+- Clean up the shadow thing under the checkbook.
+- improve the visuals
+- handle landscape (laptops, phones in landscape, tablets) better
+
+
+Old SVG tasks
 
 - The SVG isn't rendering in Firefox. Probably related to https://bugzilla.mozilla.org/show_bug.cgi?id=995813
 - make the surrounding HTML load the fonts. I believe I've found all the fonts, lmromandunh10-regular is Latin Modern Roman Dunhill. There's a useful tool in Inkscape, Extensions/type/Replace Font... List Fonts.
@@ -124,5 +140,11 @@ sans-serif
 
 - Typewriter photo by Katrin Hauf on Unsplash
 - Many photos courtesy Wawawai Winery
-- desk texture by cgtextures.com
+- desk texture by textures.com
+- wine glass courtesy cleanpng.com
+- Some of Annette's text courtesy Stacia Moffett
+
+
+
+
 
