@@ -98,8 +98,8 @@ img {
 }
 .response-letter {
   font-family: 'Courier New', Courier, monospace;
-  height: 23.5vw;
-  max-height: 364px;
+  height: 38.5vw;
+  max-height: 310px;
   margin-left: 6%;
   padding: 0 0px 13%;
   overflow: auto;
