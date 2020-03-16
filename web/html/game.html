@@ -9,6 +9,7 @@
   let state = null
   let oops = ''
   let choiceIndex = 0
+  let sending = false
 
 const App = {
   view() {
@@ -16,7 +17,8 @@ const App = {
       return m('div', 'Loading...')
     }
 
-    const choice = state.annette[choiceIndex]
+    const choices = state.annette
+    const currentChoice = choices[choiceIndex]
 
     return [
       m('.desktop-wrap', m('.desktop',
@@ -51,10 +53,34 @@ const App = {
         ),
       )),
 
-      m('.player-controls',
+      m('.player-input',
+        m('.controls',
+          m('button', {
+            onclick() {
+              choiceIndex -= 1
+            },
+            disabled: choiceIndex === 0,
+          }, '< Prev Choice'),
+
+          m('button', {
+            onclick() {
+              choiceIndex += 1
+            },
+            disabled: choiceIndex === choices.length-1,
+          }, 'Next Choice >'),
+
+          m('button', {
+            async onclick() {
+              sending = true
+              await act(currentChoice.action)
+              sending = false
+              choiceIndex = 0
+            }
+          }, 'Send Letter')
+        ),
         m('.typewriter',
           m('.response-letter-wrap',
-            m('.response-letter', choice.letter.map(p => m('p', p))),
+            m('.response-letter', currentChoice.letter.map(p => m('p', p))),
           ),
           m('.typewriter-overlay'),
         )

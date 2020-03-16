@@ -23,6 +23,9 @@ img {
   flex-direction: column;
 }
 
+/* * * * *
+ * Desktop
+ */
 .desktop-wrap {
   overflow: hidden;
   flex: 1;
@@ -78,37 +81,6 @@ img {
   .report-letter {
     margin: 20px;
   }
-}
-
-.typewriter {
-  background: url(/static/img/typewriter.png) top center no-repeat;
-  background-size: cover;
-  position: relative;
-  height: 410px;
-  margin: 30px auto 0;
-  max-width: 800px;
-}
-.typewriter-overlay {
-  background: url(/static/img/typewriter-overlay.png) top center no-repeat;
-  position: absolute; top: 0; right: 0; bottom: 0; left: 0;
-  pointer-events: none;
-}
-.response-letter-wrap {
-  padding: 5% 21% 0;
-}
-.response-letter {
-  font-family: 'Courier New', Courier, monospace;
-  height: 38.5vw;
-  max-height: 310px;
-  margin-left: 6%;
-  padding: 0 0px 13%;
-  overflow: auto;
-}
-.response-letter p {
-  margin-top: 1em;
-}
-.response-letter p:first-child {
-  margin-top: 0;
 }
 
 @media(min-width: 800px) {
@@ -175,4 +147,62 @@ img {
     z-index: -1;
     box-shadow: inset 0 0 20px 10px rgba(0,0,0,0.6);
   }
+}
+
+/* * * * * * * *
+ * Player Input
+ */
+.typewriter {
+  background: url(/static/img/typewriter.png) top center no-repeat;
+  background-size: cover;
+  position: relative;
+  height: 410px;
+  margin: 30px auto 0;
+  max-width: 800px;
+}
+.typewriter-overlay {
+  background: url(/static/img/typewriter-overlay.png) top center no-repeat;
+  position: absolute; top: 0; right: 0; bottom: 0; left: 0;
+  pointer-events: none;
+}
+.response-letter-wrap {
+  padding: 5% 21% 0;
+}
+.response-letter {
+  font-family: 'Courier New', Courier, monospace;
+  height: 38.5vw;
+  max-height: 310px;
+  margin-left: 6%;
+  padding: 0 0px 13%;
+  overflow: auto;
+}
+.response-letter p {
+  margin-top: 1em;
+}
+.response-letter p:first-child {
+  margin-top: 0;
+}
+
+.player-input > .controls {
+  margin-top: 30px;
+  text-align: center;
+}
+.player-input > .controls button {
+  background: hsla(10, 5%, 22%, 1);
+  border: none;
+  color: #eee;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 1rem;
+  text-transform: uppercase;
+  border-radius: 5px;
+}
+.player-input > .controls button[disabled] {
+  opacity: 0.4;
+}
+.player-input > .controls button:hover {
+  background: hsla(10, 5%, 25%, 1);
+}
+.player-input > .controls button:active {
+  background: hsla(10, 5%, 35%, 1);
 }
