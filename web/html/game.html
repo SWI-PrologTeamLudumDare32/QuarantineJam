@@ -18,14 +18,17 @@ const App = {
       m('.desktop',
         m('.side',
           m('.report-letter',
+            state.priscilla.map(paragraph =>
+              m('p', paragraph)
+            )
           ),
         ),
         m('.side',
           m('.inventory-letter',
-            m('h2', 'Inventory'),
+            m('h2', 'Inventory:'),
             m('ul', state.inventory.map(row =>
-              m('li', `${row.cnt} ${row.item} (${row.status})`)
-            ))
+              m('li', `* ${row.cnt >= 2 ? formatNumber(row.cnt)+' ' : ''}${row.item}, ${row.status}`)
+            )),
           ),
         ),
 
@@ -46,9 +49,17 @@ async function act(action) {
     url: '/game_turn',
     body: { action },
   })
+  console.log("New state:", state)
 }
 
 act('get_state')
 
 m.mount(document.getElementById('app'), App)
+
+//
+// Helpers
+//
+function formatNumber(num) {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+}
 </script>

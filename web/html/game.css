@@ -1,3 +1,13 @@
+@font-face {
+  font-family: 'Karumbi';
+  src: url('/static/font/karumbi-webfont.woff2') format('woff2'),
+       url('/static/font/karumbi-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+* {
+  box-sizing: border-box;
+}
 body {
   background: url('/static/img/bg-table.jpg') repeat;
 }
@@ -28,15 +38,35 @@ img {
 }
 
 .inventory-letter {
+  font-family: Karumbi, Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 1.25rem;
   width: 300px;
   height: 440px;
+  padding: 20px 25px;
   background: #E4E3E1;
+  transform: rotate(1deg);
+}
+.inventory-letter h2 {
+  font-size: 1.75rem;
+}
+.inventory-letter li {
+  margin-top: 0.25rem;
 }
 
 .report-letter {
+  font-family: Karumbi, Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 1.5rem;
   width: 320px;
   height: 500px;
   background: url('/static/img/bg-paper.jpg') repeat;
+  padding: 30px;
+  transform: rotate(-1deg);
+}
+.report-letter p {
+  margin-top: 0.75rem;
+}
+.report-letter p:first-child {
+  margin-top: 0;
 }
 @media(min-width: 360px) {
   .report-letter {
@@ -49,8 +79,9 @@ img {
     display: flex;
     flex-direction: row-reverse;
     height: 100%;
-    max-width: 1440px;
+    max-width: 1280px;
     margin: 0 auto;
+    height: 60vw;
     max-height: 770px;
   }
   .desktop > .side {
@@ -65,12 +96,14 @@ img {
     width: 64%;
     height: 80%;
     transform: rotate(5deg);
+    padding: 8%;
   }
   .report-letter {
     margin-top: 12%;
     width: 74%;
     height: 88%;
     transform: rotate(-5deg);
+    padding: 6%;
   }
 
   .decoration-photo {
