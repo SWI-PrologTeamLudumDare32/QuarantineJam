@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1000"
+   height="890"
+   viewBox="0 0 264.58334 235.47916"
+   version="1.1"
+   id="svg8"
+   sodipodi:docname="pagelayoutnostatic.svg"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   inkscape:export-filename="/home/anniepoo/QuarantineJam/background/screenshot.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   style="enable-background:new"
+   enable-background="new">
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="577.77569"
+     inkscape:cy="442.20222"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1853"
+     inkscape:window-height="1025"
+     inkscape:window-x="67"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     objecttolerance="10"
+     units="px" />
+  <defs
+     id="defs2">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient2013">
+      <stop
+         style="stop-color:#d6c6d6;stop-opacity:1"
+         offset="0"
+         id="stop2009" />
+      <stop
+         style="stop-color:#bc15be;stop-opacity:0"
+         offset="1"
+         id="stop2011" />
+    </linearGradient>
+    <filter
+       inkscape:label="Canvas Bumps"
+       inkscape:menu-tooltip="Canvas texture with an HSL sensitive height map"
+       inkscape:menu="Bumps"
+       style="color-interpolation-filters:sRGB"
+       id="filter849">
+      <feTurbulence
+         type="turbulence"
+         result="result1"
+         numOctaves="4"
+         seed="399"
+         baseFrequency="0.41599999999999998"
+         id="feTurbulence831" />
+      <feDisplacementMap
+         xChannelSelector="G"
+         in2="result1"
+         result="result7"
+         id="feDisplacementMap833"
+         scale="6"
+         yChannelSelector="B" />
+      <feBlend
+         in="result7"
+         in2="SourceGraphic"
+         mode="screen"
+         result="fbSourceGraphic"
+         id="feBlend835" />
+      <feColorMatrix
+         result="fbSourceGraphicAlpha"
+         values="1 0 0 -1 0 1 0 1 -1 0 1 0 0 -1 0 -0.8 -1 0 4 -2.5 "
+         id="feColorMatrix837" />
+      <feGaussianBlur
+         result="result0"
+         in="fbSourceGraphicAlpha"
+         stdDeviation="0.5"
+         id="feGaussianBlur839" />
+      <feSpecularLighting
+         result="result6"
+         surfaceScale="1.09000003"
+         specularConstant="1"
+         specularExponent="4.9000001"
+         id="feSpecularLighting843">
+        <feDistantLight
+           azimuth="119"
+           elevation="35"
+           id="feDistantLight841" />
+      </feSpecularLighting>
+      <feComposite
+         in2="SourceGraphic"
+         k3="1"
+         k2="0.5"
+         operator="arithmetic"
+         result="result4"
+         id="feComposite845"
+         k1="0"
+         k4="0" />
+      <feComposite
+         operator="in"
+         result="result2"
+         in="result4"
+         id="feComposite847"
+         in2="result4" />
+    </filter>
+    <filter
+       style="color-interpolation-filters:sRGB"
+       inkscape:menu-tooltip="Paper like emboss effect"
+       inkscape:menu="Bumps"
+       inkscape:label="Paper Bump"
+       id="filter937">
+      <feTurbulence
+         result="result0"
+         seed="0"
+         baseFrequency="1"
+         numOctaves="5"
+         type="fractalNoise"
+         id="feTurbulence919" />
+      <feConvolveMatrix
+         result="result5"
+         order="5 5"
+         kernelMatrix="-2 0 0 0 -2 0 -2 0 -2 0 0 0 -10 0 0 0 -2 0 -2 0 -2 0 0 0 -2 "
+         targetX="2"
+         targetY="2"
+         id="feConvolveMatrix921" />
+      <feComposite
+         result="result2"
+         k3="0.5"
+         k2="0.5"
+         k1="1.5"
+         operator="arithmetic"
+         in="result5"
+         in2="SourceGraphic"
+         id="feComposite923"
+         k4="0" />
+      <feColorMatrix
+         in="result2"
+         type="luminanceToAlpha"
+         result="result2"
+         id="feColorMatrix925" />
+      <feDiffuseLighting
+         surfaceScale="0.07"
+         result="result1"
+         diffuseConstant="0.60000002"
+         id="feDiffuseLighting929"
+         lighting-color="#f2f2f2">
+        <feDistantLight
+           elevation="35"
+           azimuth="103"
+           id="feDistantLight927" />
+      </feDiffuseLighting>
+      <feComposite
+         operator="arithmetic"
+         in="result1"
+         k1="1.5"
+         k3="0.5"
+         result="result3"
+         in2="SourceGraphic"
+         id="feComposite931"
+         k2="0"
+         k4="0" />
+      <feBlend
+         in="result3"
+         mode="normal"
+         result="result6"
+         in2="result1"
+         id="feBlend933" />
+      <feComposite
+         operator="in"
+         in2="SourceGraphic"
+         id="feComposite935" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter2023">
+      <feBlend
+         inkscape:collect="always"
+         mode="screen"
+         in2="BackgroundImage"
+         id="feBlend2025" />
+    </filter>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient2013"
+       id="linearGradient2033"
+       gradientUnits="userSpaceOnUse"
+       x1="143.38914"
+       y1="306.4147"
+       x2="180.19054"
+       y2="344.36697"
+       gradientTransform="matrix(-1,0,0,1,265.99492,0)" />
+    <filter
+       style="color-interpolation-filters:sRGB;"
+       inkscape:label="Drop Shadow"
+       id="filter2439">
+      <feFlood
+         flood-opacity="0.227451"
+         flood-color="rgb(0,0,0)"
+         result="flood"
+         id="feFlood2429" />
+      <feComposite
+         in="flood"
+         in2="SourceGraphic"
+         operator="in"
+         result="composite1"
+         id="feComposite2431" />
+      <feGaussianBlur
+         in="composite1"
+         stdDeviation="5.7"
+         result="blur"
+         id="feGaussianBlur2433" />
+      <feOffset
+         dx="2"
+         dy="1"
+         result="offset"
+         id="feOffset2435" />
+      <feComposite
+         in="SourceGraphic"
+         in2="offset"
+         operator="over"
+         result="fbSourceGraphic"
+         id="feComposite2437" />
+      <feColorMatrix
+         result="fbSourceGraphicAlpha"
+         in="fbSourceGraphic"
+         values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"
+         id="feColorMatrix2465" />
+      <feFlood
+         id="feFlood2467"
+         flood-opacity="0.227451"
+         flood-color="rgb(0,0,0)"
+         result="flood"
+         in="fbSourceGraphic" />
+      <feComposite
+         in2="fbSourceGraphic"
+         id="feComposite2469"
+         in="flood"
+         operator="in"
+         result="composite1" />
+      <feGaussianBlur
+         id="feGaussianBlur2471"
+         in="composite1"
+         stdDeviation="5.7"
+         result="blur" />
+      <feOffset
+         id="feOffset2473"
+         dx="2"
+         dy="1"
+         result="offset" />
+      <feComposite
+         in2="offset"
+         id="feComposite2475"
+         in="fbSourceGraphic"
+         operator="over"
+         result="composite2" />
+    </filter>
+    <filter
+       style="color-interpolation-filters:sRGB;"
+       inkscape:label="Drop Shadow"
+       id="filter2451">
+      <feFlood
+         flood-opacity="0.227451"
+         flood-color="rgb(0,0,0)"
+         result="flood"
+         id="feFlood2441" />
+      <feComposite
+         in="flood"
+         in2="SourceGraphic"
+         operator="in"
+         result="composite1"
+         id="feComposite2443" />
+      <feGaussianBlur
+         in="composite1"
+         stdDeviation="5.7"
+         result="blur"
+         id="feGaussianBlur2445" />
+      <feOffset
+         dx="2"
+         dy="1"
+         result="offset"
+         id="feOffset2447" />
+      <feComposite
+         in="SourceGraphic"
+         in2="offset"
+         operator="over"
+         result="fbSourceGraphic"
+         id="feComposite2449" />
+      <feColorMatrix
+         result="fbSourceGraphicAlpha"
+         in="fbSourceGraphic"
+         values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"
+         id="feColorMatrix2477" />
+      <feFlood
+         id="feFlood2479"
+         flood-opacity="0.227451"
+         flood-color="rgb(0,0,0)"
+         result="flood"
+         in="fbSourceGraphic" />
+      <feComposite
+         in2="fbSourceGraphic"
+         id="feComposite2481"
+         in="flood"
+         operator="in"
+         result="composite1" />
+      <feGaussianBlur
+         id="feGaussianBlur2483"
+         in="composite1"
+         stdDeviation="5.7"
+         result="blur" />
+      <feOffset
+         id="feOffset2485"
+         dx="2"
+         dy="1"
+         result="offset" />
+      <feComposite
+         in2="offset"
+         id="feComposite2487"
+         in="fbSourceGraphic"
+         operator="over"
+         result="composite2" />
+    </filter>
+    <filter
+       style="color-interpolation-filters:sRGB;"
+       inkscape:label="Drop Shadow"
+       id="filter2463">
+      <feFlood
+         flood-opacity="0.227451"
+         flood-color="rgb(0,0,0)"
+         result="flood"
+         id="feFlood2453" />
+      <feComposite
+         in="flood"
+         in2="SourceGraphic"
+         operator="in"
+         result="composite1"
+         id="feComposite2455" />
+      <feGaussianBlur
+         in="composite1"
+         stdDeviation="5.7"
+         result="blur"
+         id="feGaussianBlur2457" />
+      <feOffset
+         dx="2"
+         dy="1"
+         result="offset"
+         id="feOffset2459" />
+      <feComposite
+         in="SourceGraphic"
+         in2="offset"
+         operator="over"
+         result="fbSourceGraphic"
+         id="feComposite2461" />
+      <feColorMatrix
+         result="fbSourceGraphicAlpha"
+         in="fbSourceGraphic"
+         values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"
+         id="feColorMatrix2489" />
+      <feFlood
+         id="feFlood2491"
+         flood-opacity="0.227451"
+         flood-color="rgb(0,0,0)"
+         result="flood"
+         in="fbSourceGraphic" />
+      <feComposite
+         in2="fbSourceGraphic"
+         id="feComposite2493"
+         in="flood"
+         operator="in"
+         result="composite1" />
+      <feGaussianBlur
+         id="feGaussianBlur2495"
+         in="composite1"
+         stdDeviation="5.7"
+         result="blur" />
+      <feOffset
+         id="feOffset2497"
+         dx="2"
+         dy="1"
+         result="offset" />
+      <feComposite
+         in2="offset"
+         id="feComposite2499"
+         in="fbSourceGraphic"
+         operator="over"
+         result="composite2" />
+    </filter>
+  </defs>
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/by/4.0/" />
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/by/4.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="whole"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-61.520843)"
+     style="filter:url(#filter2023)">
+    <text
+       inkscape:label="inventtext"
+       id="inventtext"
+       y="72.032372"
+       x="57.619476"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.60180044px;line-height:1.25;font-family:san-serif;-inkscape-font-specification:san-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.14380626"
+       xml:space="preserve"
+       transform="rotate(12.859509)"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.60180044px;font-family:san-serif;-inkscape-font-specification:san-serif;stroke-width:0.14380626"
+         y="72.032372"
+         x="57.619476"
+         id="tspan936"
+         sodipodi:role="line">Inventory:</tspan><tspan
+         id="tspan940"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.60180044px;font-family:san-serif;-inkscape-font-specification:san-serif;stroke-width:0.14380626"
+         y="77.784622"
+         x="57.619476"
+         sodipodi:role="line">* Trailer</tspan><tspan
+         id="tspan942"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.60180044px;font-family:san-serif;-inkscape-font-specification:san-serif;stroke-width:0.14380626"
+         y="83.536873"
+         x="57.619476"
+         sodipodi:role="line">* unused field</tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.60180044px;font-family:san-serif;-inkscape-font-specification:san-serif;stroke-width:0.14380626"
+         y="89.289124"
+         x="57.619476"
+         sodipodi:role="line"
+         id="tspan6379" /><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.60180044px;font-family:san-serif;-inkscape-font-specification:san-serif;stroke-width:0.14380626"
+         y="95.041374"
+         x="57.619476"
+         sodipodi:role="line"
+         id="tspan6383">Bank Balance: $10,000</tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.60180044px;font-family:san-serif;-inkscape-font-specification:san-serif;stroke-width:0.14380626"
+         y="100.79362"
+         x="57.619476"
+         sodipodi:role="line"
+         id="tspan965" /><tspan
+         id="tspan944"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.60180044px;font-family:san-serif;-inkscape-font-specification:san-serif;stroke-width:0.14380626"
+         y="106.54588"
+         x="57.619476"
+         sodipodi:role="line" /></text>
+    <flowRoot
+       inkscape:label="notetext"
+       transform="matrix(0.14031401,-0.03149956,0.03149956,0.14031401,234.80611,101.26932)"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:32px;line-height:1.25;font-family:san-serif;-inkscape-font-specification:san-serif;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
+       id="notetext"
+       xml:space="preserve"><flowRegion
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:32px;font-family:Karumbi;-inkscape-font-specification:'Karumbi, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"
+         id="flowRegion4738"><rect
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:32px;font-family:Karumbi;-inkscape-font-specification:'Karumbi, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"
+           y="-199.15634"
+           x="-658.57141"
+           height="545.71429"
+           width="768.57141"
+           id="rect4740" /></flowRegion><flowPara
+         id="flowPara4782"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:37.33333206px;font-family:san-serif;-inkscape-font-specification:san-serif;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">May 2020,</flowPara><flowPara
+         id="flowPara4784"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:37.33333206px;font-family:san-serif;-inkscape-font-specification:san-serif;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">Dearest Annette,</flowPara><flowPara
+         id="flowPara4786"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:37.33333206px;font-family:san-serif;-inkscape-font-specification:san-serif;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">We've done it - we've finished the paperwork and</flowPara><flowPara
+         id="flowPara4788"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:37.33333206px;font-family:san-serif;-inkscape-font-specification:san-serif;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">moved into Wannabe Winery.</flowPara><flowPara
+         id="flowPara4790"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:37.33333206px;font-family:san-serif;-inkscape-font-specification:san-serif;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">Our dream's come true!</flowPara><flowPara
+         id="flowPara4792"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:37.33333206px;font-family:san-serif;-inkscape-font-specification:san-serif;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">We're living in the trailer for now, and just</flowPara><flowPara
+         id="flowPara4794"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:37.33333206px;font-family:san-serif;-inkscape-font-specification:san-serif;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">thinking about first steps. Hope all is well</flowPara><flowPara
+         id="flowPara4796"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:37.33333206px;font-family:san-serif;-inkscape-font-specification:san-serif;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">with you.</flowPara><flowPara
+         id="flowPara4798"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:37.33333206px;font-family:san-serif;-inkscape-font-specification:san-serif;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">What do you think we should do first?</flowPara><flowPara
+         id="flowPara4800"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:37.33333206px;font-family:san-serif;-inkscape-font-specification:san-serif;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">Love, Priscilla</flowPara><flowPara
+         id="flowPara4802"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:37.33333206px;font-family:san-serif;-inkscape-font-specification:san-serif;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start" /><flowPara
+         id="flowPara4804"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:37.33333206px;font-family:san-serif;-inkscape-font-specification:san-serif;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start" /><flowPara
+         id="flowPara4806"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:37.33333206px;font-family:san-serif;-inkscape-font-specification:san-serif;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start" /><flowPara
+         id="flowPara4808"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:37.33333206px;font-family:san-serif;-inkscape-font-specification:san-serif;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start" /><flowPara
+         id="flowPara4810"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:37.33333206px;font-family:san-serif;-inkscape-font-specification:san-serif;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start" /></flowRoot>    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:5.41771793px;line-height:1.25;font-family:san-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.33860737"
+       x="96.988937"
+       y="242.0898"
+       id="annettetext"
+       inkscape:label="annettetext"><tspan
+         sodipodi:role="line"
+         id="tspan1990"
+         x="96.988937"
+         y="242.0898"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.41771793px;font-family:san-serif;-inkscape-font-specification:san-serif;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.33860737">Dear Priscilla;</tspan><tspan
+         sodipodi:role="line"
+         x="96.988937"
+         y="248.86194"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.41771793px;font-family:san-serif;-inkscape-font-specification:san-serif;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.33860737"
+         id="tspan1996">I suggest you </tspan><tspan
+         sodipodi:role="line"
+         x="96.988937"
+         y="255.63409"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.41771793px;font-family:san-serif;-inkscape-font-specification:san-serif;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.33860737"
+         id="tspan2000" /><tspan
+         sodipodi:role="line"
+         x="96.988937"
+         y="262.40625"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.41771793px;font-family:san-serif;-inkscape-font-specification:san-serif;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.33860737"
+         id="tspan2002">Sincerely,</tspan><tspan
+         sodipodi:role="line"
+         x="96.988937"
+         y="269.17838"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.41771793px;font-family:san-serif;-inkscape-font-specification:san-serif;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.33860737"
+         id="tspan2004">Annette</tspan></text>
+  </g>
+</svg>
