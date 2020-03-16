@@ -15,8 +15,9 @@ const App = {
       return m('div', 'Loading...')
     }
     return [
-      m('.desktop',
+      m('.desktop-wrap', m('.desktop',
         m('.side',
+          // m('img[src=/static/svg/gray-sheet.svg]'),
           m('.report-letter',
             state.priscilla.map(paragraph =>
               m('p', paragraph)
@@ -37,8 +38,14 @@ const App = {
         ),
         m('.decoration.decoration-drink',
           m('img[src=/static/img/desktop/wineglass.png]')
-        )
-      ),
+        ),
+        m('.decoration.decoration-form',
+          m('img[src=/static/img/desktop/ttbform.png]')
+        ),
+        m('.decoration.decoration-checkbook',
+          m('img[src=/static/img/desktop/checkbook.png]')
+        ),
+      )),
     ]
   }
 }
