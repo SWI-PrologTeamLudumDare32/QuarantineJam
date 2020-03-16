@@ -118,9 +118,9 @@ get_chr_response_dict(_, Response) :-
         _{ item: 'wine press', cnt: 1, status: ok }], Inv),
     append(Inv, [_{ item: money, cnt: 14000, status: ok}], Inventory),
     random_member(Pic, [
-               '/static/image/truck.jpg',
-               '/static/image/turkeys.jpg',
-               '/static/image/tractor.jpg']),
+               '/static/img/pix/truck.jpg',
+               '/static/img/pix/turkeys.jpg',
+               '/static/img/pix/tractor.jpg']),
     Response = _{
                    priscilla: Priscilla,
                    annette: Annette,

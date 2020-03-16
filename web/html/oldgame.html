@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <link rel="stylesheet" href="./reset.css">
 <link rel="stylesheet" href="./game.css">
+<meta http-equiv="Cache-Control" content="no-store" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="/static/js/vendor/mithril-2.0.4.js"></script>
 
@@ -37,14 +38,12 @@ const App = {
             m('ul', state.inventory.map(row =>
               m('li', `* ${row.cnt >= 2 ? formatNumber(row.cnt)+' ' : ''}${row.item}, ${row.status}`)
             )),
-          ),
-        ),
 
         m('.decoration.decoration-photo',
           m('img', {src: state.image}, '')
         ),
         m('.decoration.decoration-drink',
-          m('img[src=/static/img/desktop/kisspngwine.png]')
+          m('img[src=/static/img/desktop/wineglass.png]')
         ),
         m('.decoration.decoration-form',
           m('img[src=/static/img/desktop/ttbform.png]')
@@ -96,7 +95,7 @@ async function act(action) {
     url: '/game_turn',
     body: { action },
   })
-  console.log("New state4:", state)
+  console.log("New state2:", state)
 }
 
 act('get_state')

@@ -123,3 +123,6 @@ sans-serif
 ## Misc Credits
 
 - Typewriter photo by Katrin Hauf on Unsplash
+- Many photos courtesy Wawawai Winery
+- desk texture by cgtextures.com
+
