@@ -1,3 +1,13 @@
+@font-face {
+  font-family: 'Karumbi';
+  src: url('/static/font/karumbi-webfont.woff2') format('woff2'),
+       url('/static/font/karumbi-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+* {
+  box-sizing: border-box;
+}
 body {
   background: url('/static/img/bg-table.jpg') repeat;
 }
@@ -7,9 +17,18 @@ img {
 }
 
 #app {
-  /* overflow: hidden; */
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
+  display: flex;
+  flex-direction: column;
+}
+
+/* * * * *
+ * Desktop
+ */
+.desktop-wrap {
+  overflow: hidden;
+  flex: 1;
 }
 
 .desktop {
@@ -28,15 +47,35 @@ img {
 }
 
 .inventory-letter {
+  font-family: Karumbi, Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 1.25rem;
   width: 300px;
   height: 440px;
+  padding: 20px 25px;
   background: #E4E3E1;
+  transform: rotate(1deg);
+}
+.inventory-letter h2 {
+  font-size: 1.75rem;
+}
+.inventory-letter li {
+  margin-top: 0.25rem;
 }
 
 .report-letter {
+  font-family: Karumbi, Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 1.5rem;
   width: 320px;
   height: 500px;
   background: url('/static/img/bg-paper.jpg') repeat;
+  padding: 30px;
+  transform: rotate(-1deg);
+}
+.report-letter p {
+  margin-top: 0.75rem;
+}
+.report-letter p:first-child {
+  margin-top: 0;
 }
 @media(min-width: 360px) {
   .report-letter {
@@ -49,9 +88,11 @@ img {
     display: flex;
     flex-direction: row-reverse;
     height: 100%;
-    max-width: 1440px;
+    max-width: 1280px;
     margin: 0 auto;
-    max-height: 770px;
+    height: 70vw;
+    max-height: 870px;
+    padding-bottom: 130px;
   }
   .desktop > .side {
     flex: 1;
@@ -65,12 +106,15 @@ img {
     width: 64%;
     height: 80%;
     transform: rotate(5deg);
+    padding: 8%;
   }
   .report-letter {
+    box-shadow: 0px 4px .4em rgba(0,0,0,0.3);
     margin-top: 12%;
     width: 74%;
     height: 88%;
     transform: rotate(-5deg);
+    padding: 6%;
   }
 
   .decoration-photo {
@@ -82,8 +126,83 @@ img {
     transform: rotate(48deg);
   }
   .decoration-drink {
-    height: 45%;
-    top: 72%;
-    left: 28%;
+    height: 37%;
+    bottom: 6%;
+    left: 30%;
+    transform: rotate(-17deg) translateY(8%);
   }
+  .decoration-form {
+    width: 27%;
+    top: 9%;
+    right: 5%;
+    transform: rotate(78deg);
+    z-index: -1;
+    filter: brightness(91%);
+  }
+  .decoration-checkbook {
+    height: 36%;
+    bottom: 4%;
+    right: 1.5%;
+    transform: rotate(3deg);
+    z-index: -1;
+    box-shadow: inset 0 0 20px 10px rgba(0,0,0,0.6);
+  }
+}
+
+/* * * * * * * *
+ * Player Input
+ */
+.typewriter {
+  background: url(/static/img/typewriter.png) top center no-repeat;
+  background-size: cover;
+  position: relative;
+  height: 410px;
+  margin: 30px auto 0;
+  max-width: 800px;
+}
+.typewriter-overlay {
+  background: url(/static/img/typewriter-overlay.png) top center no-repeat;
+  position: absolute; top: 0; right: 0; bottom: 0; left: 0;
+  pointer-events: none;
+}
+.response-letter-wrap {
+  padding: 5% 21% 0;
+}
+.response-letter {
+  font-family: 'Courier New', Courier, monospace;
+  height: 38.5vw;
+  max-height: 310px;
+  margin-left: 6%;
+  padding: 0 0px 13%;
+  overflow: auto;
+}
+.response-letter p {
+  margin-top: 1em;
+}
+.response-letter p:first-child {
+  margin-top: 0;
+}
+
+.player-input > .controls {
+  margin-top: 30px;
+  text-align: center;
+}
+.player-input > .controls button {
+  background: hsla(10, 5%, 22%, 1);
+  border: none;
+  color: #eee;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 1rem;
+  text-transform: uppercase;
+  border-radius: 5px;
+}
+.player-input > .controls button[disabled] {
+  opacity: 0.4;
+}
+.player-input > .controls button:hover {
+  background: hsla(10, 5%, 25%, 1);
+}
+.player-input > .controls button:active {
+  background: hsla(10, 5%, 35%, 1);
 }

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <link rel="stylesheet" href="./reset.css">
 <link rel="stylesheet" href="./game.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="/static/js/vendor/mithril-2.0.4.js"></script>
 
 <div id="app"></div>
@@ -8,24 +9,34 @@
 <script>
   let state = null
   let oops = ''
+  let choiceIndex = 0
+  let sending = false
 
 const App = {
   view() {
     if (!state) {
       return m('div', 'Loading...')
     }
+
+    const choices = state.annette
+    const currentChoice = choices[choiceIndex]
+
     return [
-      m('.desktop',
+      m('.desktop-wrap', m('.desktop',
         m('.side',
+          // m('img[src=/static/svg/gray-sheet.svg]'),
           m('.report-letter',
+            state.priscilla.map(paragraph =>
+              m('p', paragraph)
+            )
           ),
         ),
         m('.side',
           m('.inventory-letter',
-            m('h2', 'Inventory'),
+            m('h2', 'Inventory:'),
             m('ul', state.inventory.map(row =>
-              m('li', `${row.cnt} ${row.item} (${row.status})`)
-            ))
+              m('li', `* ${row.cnt >= 2 ? formatNumber(row.cnt)+' ' : ''}${row.item}, ${row.status}`)
+            )),
           ),
         ),
 
@@ -34,8 +45,47 @@ const App = {
         ),
         m('.decoration.decoration-drink',
           m('img[src=/static/img/desktop/wineglass.png]')
+        ),
+        m('.decoration.decoration-form',
+          m('img[src=/static/img/desktop/ttbform.png]')
+        ),
+        m('.decoration.decoration-checkbook',
+          m('img[src=/static/img/desktop/checkbook.png]')
+        ),
+      )),
+
+      m('.player-input',
+        m('.controls',
+          m('button', {
+            onclick() {
+              choiceIndex -= 1
+            },
+            disabled: choiceIndex === 0,
+          }, '< Prev Choice'),
+
+          m('button', {
+            onclick() {
+              choiceIndex += 1
+            },
+            disabled: choiceIndex === choices.length-1,
+          }, 'Next Choice >'),
+
+          m('button', {
+            async onclick() {
+              sending = true
+              await act(currentChoice.action)
+              sending = false
+              choiceIndex = 0
+            }
+          }, 'Send Letter')
+        ),
+        m('.typewriter',
+          m('.response-letter-wrap',
+            m('.response-letter', currentChoice.letter.map(p => m('p', p))),
+          ),
+          m('.typewriter-overlay'),
         )
-      ),
+      )
     ]
   }
 }
@@ -46,9 +96,17 @@ async function act(action) {
     url: '/game_turn',
     body: { action },
   })
+  console.log("New state:", state)
 }
 
 act('get_state')
 
 m.mount(document.getElementById('app'), App)
+
+//
+// Helpers
+//
+function formatNumber(num) {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+}
 </script>
