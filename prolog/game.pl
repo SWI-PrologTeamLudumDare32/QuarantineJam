@@ -3,52 +3,47 @@
   make_player_inited/1,
   act/2,
   init_global/0,
-  current_date/1
+  current_date/1,
+  has/3
 ]).
 
 :- use_module(library(chr)).
 :- use_module(happenings).
 
 :- chr_constraint
-  cur_ticks/2,          % session, ticks     the current time in ticks for session s
-  get_ticks/2,          % session, Ticks      transient getter of the current ticks
-  days_go_by/2,         % session, ticks      increment the current time (and make world go)
-  reset_time/1,         % session             reset the current time to start
+  cur_ticks/2,            % session, ticks         the current time in ticks for session s
+  get_ticks/2,            % session, Ticks         transient getter of the current ticks
+  days_go_by/2,           % session, ticks         increment the current time (and make world go)
+  reset_time/1,           % session                reset the current time to start
 
-  chr_reset/1,          % session            transient reset the game state
-  inited/1,             % session            exists if this session initialized
-  make_player_inited/1, % session            transient idempotic insure session inited
+  chr_reset/1,            % session                transient reset the game state
+  inited/1,               % session                exists if this session initialized
+  make_player_inited/1,   % session                transient idempotic insure session inited
 
-  act/2,                % session, actionname  transient, causes this action to happen
-  potential_action/1,    % actionname         same as known_action but as CHR constraint
+  act/2,                  % session, actionname    transient, causes this action to happen
+  potential_action/1,     % actionname             same as known_action but as CHR constraint
   get_available_actions/2, % session, ActionName   transient get all actions we can do now
   collect_available_actions/2, % session, Actions  transient, after we've made available_actions collect them
-  available_action/2,    % session, actionname     transient this action is available
+  available_action/2,     % session, actionname     transient this action is available
+  acty_done/2,            % session, actyname      simple one time activities. succeeds if this acty done
+  acty/2,                 % session, actyname      record we did this acty
 
-  thing/3.             % session, Type, Status  an individual object
+
+  thing/3,               % session, type, status   an individual object
+  count_things/3,        % session, type, Count    return the count of things
+  set_init_inventory/1.  % session                 transient create the initial inventory
 
 get_state(S, Response) :-
+    (   get_state_(S, Response)
+    ->  true
+    ;   gtrace
+    ).
+get_state_(S, Response) :-
     b_setval(session, S),
     get_available_actions(S, Actions),
     maplist(annette_letter, Actions, Annette),
+    priscilla_letter(Priscilla),
 % TODO work downwards from here
-    random_member(Priscilla,
-                  [
-                      ["June 2020", "We live in a trailer and eat canned beans",
-                    "I\'m clueless about this stuff. Please help us.",
-                    "love,",
-                    "Priscilla"],
-                      ["November 2020",
-                       "Thanks for all your help. We were sure lost when we started.",
-                       "Do I have to feed the chickens something? They seem sickly.",
-                    "love,",
-                    "Priscilla"],
-                      ["June 2022",
-                       "Thanks for all your help. We were sure lost when we started. Remember when I tried to feed the cow Frosted Flakes?",
-                       "The goat died.",
-                    "love,",
-                    "Priscilla"]
-                  ]),
     random_permutation([
         _{ item: chickens, cnt:42, status: well },
         _{ item: chickens, cnt:42, status: sick },
@@ -75,20 +70,36 @@ get_state(S, Response) :-
 		 *  with a status (sick, ok, etc).
 		 *******************************/
 
-% on reset wipe out all the things
-chr_reset(S) \ thing(S, _, _) <=> true.
 % and add the initial inventory
-chr_reset(S) ==>
+set_init_inventory(S) \ thing(S, _, _) <=> true.
+set_init_inventory(S) <=>
     thing(S, field, ok),   % don't want to trigger news, etc so add directly
     thing(S, trailer, run_down),
     thing(S, cow, ok),
     thing(S, money, 14000).
 
+has(Type, Op, Count) :-
+    b_getval(session, S),
+    count_things(S, Type, N),
+    call(Op, N, Count).
+
+
+:- chr_constraint countable/2, find_countables/2, count/4.
+
+count_things(S, Type, N) ==> find_countables(S, Type), count(S, Type, 0, N).
+
+find_countables(S, Type), thing(S, Type, _) ==> countable(S, Type).
+find_countables(_, _) <=> true.
+
+count(S, Type, SoFar, N), countable(S, Type) <=>
+                    succ(SoFar, NSF),
+                    count(S, Type, NSF, N).
+count(_, _, SoFar, N) <=> SoFar = N.
+
 % money is fungible
 thing(S, money, A), thing(S, money, B) <=>
     NM is A + B,
     thing(S, money, NM).
-
 
 		 /*******************************
 		 *          Actions
@@ -98,6 +109,10 @@ thing(S, money, A), thing(S, money, B) <=>
 		 *          available - an action the player can do now
 		 *
 		 *******************************/
+
+% simpl one-time activity.
+acty(S, A) \ acty_done(S, A) <=> true.
+acty_done(_, _) <=> fail.
 
 :- discontiguous
   action_advice/2,   % Action, Advice   map action atoms to Advice realstrings
@@ -140,7 +155,7 @@ act(S, time_passes) <=> days_go_by(S, 7).
 
 
 		 /*******************************
-		 *        Annettes Letter       *
+		 *        Letters               *
 		 *******************************/
 
 annette_letter(Action, _{action: Action,
@@ -154,6 +169,34 @@ annette_letter(Action, _{action: Action,
               Happenings,
               "Sincerely,",
               "Annette"], Letter).
+
+priscilla_letter(Priscilla) :-
+    b_getval(session, S),
+    \+ acty_done(S, start_letter_sent),
+    !,
+    acty(S, start_letter_sent),
+    Priscilla = [
+        "March 2020",
+        "We\'ve done it! We closed on Wannabe Winery on wednesday. For now we\re living in the trailer.",
+        "Eeek, we\re so new to all this! What do you think we should do first?",
+        "love",
+        "Priscilla"].
+priscilla_letter(Priscilla) :-
+    b_getval(session, S),
+    acty_done(S, start_letter_sent),
+    current_date(stringmo(Date)),
+    get_news(News),
+    random_happenings(priscilla, Happenings),
+    flatten([
+        Date,
+        "Hey Annette",
+        News,
+        Happenings,
+        "love",
+        "Priscilla"], Priscilla).
+
+
+get_news("NEWS GOES HERE TODO").
 
 		 /*******************************
 		 * Global initialization.
@@ -197,6 +240,8 @@ inited(S) \ inited(S) <=> true.
 %  * between(L, U) succeeds if the current date is between 1 based month
 %  number L to U inclusive. If the numbers are reversed it includes new
 %  year
+%  * mo(N) N is bound to the number of months since jan 1 2020 on exit
+%  (note this starts at 2)
 %
 current_date(string(Str)) :-
   b_getval(session, S),
@@ -224,12 +269,18 @@ current_date(between(L, U)) :-
   Mo is ((Ticks div 30) mod 12) + 1,
   L =< Mo,
   Mo =< U.
+current_date(mo(N)) :-
+    b_getval(session, S),
+    get_ticks(S, T),
+    N = T div 30.
 
 % init time
 chr_reset(S) ==> reset_time(S).
 reset_time(S) \ cur_ticks(S, _) <=> true.
-reset_time(S) <=> writeln('reseting the time'),
-    cur_ticks(S, 3).  % we start in march of 2020
+reset_time(S) <=> cur_ticks(S, 90).  % we start march 1 of 2020
+% on reset wipe out all the things
+
+chr_reset(S) ==> set_init_inventory(S).
 
 % retrieve tick count
 cur_ticks(S, T) \ get_ticks(S, Ticks) <=> T = Ticks.
