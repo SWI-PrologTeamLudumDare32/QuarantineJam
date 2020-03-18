@@ -143,6 +143,9 @@ sans-serif
 - desk texture by textures.com
 - wine glass courtesy cleanpng.com
 - Some of Annette's text courtesy Stacia Moffett
+- Technical advice by Stacia Moffett
+- Cow names courtesy https://www.everydayknow.com/cow-names/
+
 
 
 

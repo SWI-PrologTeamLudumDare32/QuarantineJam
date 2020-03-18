@@ -31,7 +31,10 @@
 
   thing/3,               % session, type, status   an individual object
   count_things/3,        % session, type, Count    return the count of things
-  set_init_inventory/1.  % session                 transient create the initial inventory
+  set_init_inventory/1,  % session                 transient create the initial inventory
+
+  news/2,                % session, news           the news for this turn
+  get_news/2.            % session, News           getter for this turns news
 
 get_state(S, Response) :-
     (   get_state_(S, Response)
@@ -101,6 +104,25 @@ thing(S, money, A), thing(S, money, B) <=>
     NM is A + B,
     thing(S, money, NM).
 
+
+cow_names(['Daisy', 'Maisy', 'Annabelle', 'Clarabelle',
+                        'Gertrude', 'Candie', 'Minnie', 'Flower',
+                        'Dahlia', 'Margie', 'Margo', 'Rose', 'Bella',
+                        'Darla', 'Meg', 'Shelly', 'Molly', 'Moon',
+                        'Annabelle', 'Bell', 'Ginger', 'Bovina',
+                        'Baby', 'Teacup', 'Annie', 'Pinky',
+                        'Emma', 'Sunshine', 'Betty Sue', 'Muffin',
+                        'Penelope', 'Penny', 'Cocoa', 'Princess',
+                       'Bertha', 'Dorothy']).
+cow_breeds(['Abondance', 'Devon', 'White Park', 'Belgian Blue',
+                          'Angus', 'Angus', 'Angus',
+                          'Holstein', 'Holstein', 'Holstein', 'Holstein',
+                          'Hereford', 'Hereford', 'Hereford',
+                          'Guernsey', 'Guernsey', 'Guernsey', 'Guernsey',
+                          'Jersey', 'Jersey', 'Jersey',
+                          'Swedish'
+                         ]).
+
 		 /*******************************
 		 *          Actions
 		 *
@@ -111,6 +133,9 @@ thing(S, money, A), thing(S, money, B) <=>
 		 *******************************/
 
 % simpl one-time activity.
+% an activity is something we want to remember having happened
+% this could be a game mechanics activity like sending the start letter
+% or moving back to town, or something priscillas done at the winery
 acty(S, A) \ acty_done(S, A) <=> true.
 acty_done(_, _) <=> fail.
 
@@ -121,6 +146,8 @@ acty_done(_, _) <=> fail.
 % set semantics for actions
 available_action(S, A) \ available_action(S, A) <=> true.
 
+
+
 		 /*******************************
 		 *      Individual actions
 		 *******************************/
@@ -130,20 +157,35 @@ available_action(S, A) \ available_action(S, A) <=> true.
 known_action(game_state).
 act(_, game_state) <=> true.
 
+:- discontiguous  buy_price/2, buy_advice/2, buy_news/2.
+
+buy_thing(buy_cow, cow).
+buy_price(buy_cow, 500).
+buy_advice(buy_cow, "I suggest you buy a cow. You can get a nice milker for around $500.").
+buy_news(buy_cow, News) :-
+    cow_names(Names),
+    random_member(Cow, Names),
+    cow_breeds(Breeds),
+    random_member(Breed, Breeds),
+    format(string(News),
+           'We bought a nice ~w. I\'m going to name her ~w', [Breed, Cow]).
+
 action_advice(buy_cow, "I suggest you buy a cow. You can get a nice milker for around $500.").
+
 known_action(buy_cow).
 get_available_actions(S, _),  thing(S, money, M) ==>  M > 500 | available_action(S, buy_cow).
-thing(S, money, M), act(S, buy_cow) ==>
+thing(S, money, M) \ act(S, buy_cow) <=>
          thing(S, cow, ok),
-         NM is M - 500,
-         NM >= 0,
+         NM is M - 500,  % mustnt fail here
          thing(S, money, NM),
+         buy_news(buy_cow, News),
+         news(S, News),
          days_go_by(S, 1).
 
 known_action(sell_cow).
 action_advice(sell_cow, "I suggest you sell your cow. It should fetch about $300.").
 get_available_actions(S, _), thing(S, cow, ok) ==> available_action(S, sell_cow).
-thing(S, money, M), act(S, sell_cow), thing(S, cow, ok) <=>
+thing(S, money, M) \ act(S, sell_cow), thing(S, cow, ok) <=>
      NewM is M + 300,
      thing(S, money, NewM),
      days_go_by(S, 1).
@@ -152,6 +194,23 @@ known_action(time_passes).
 action_advice(time_passes, "Tom brought me flowers today. He\'s so romantic!").
 get_available_actions(S, _) ==> available_action(S, time_passes).
 act(S, time_passes) <=> days_go_by(S, 7).
+
+		 /*******************************
+		 *          News - things that
+		 *  happened at Priscillas,
+		 *  that are 'real'
+		 *
+		 *******************************/
+
+% Get the news destructively
+% (removes the news items as it collects them)
+% TODO go back to short form
+get_news(S, L), news(S, Item)  <=>
+      L = [Item | Tail],
+      get_news(S, Tail).
+get_news(_, L) <=> L = [].
+
+chr_reset(S) \ news(S, _) <=> true.
 
 
 		 /*******************************
@@ -185,7 +244,7 @@ priscilla_letter(Priscilla) :-
     b_getval(session, S),
     acty_done(S, start_letter_sent),
     current_date(stringmo(Date)),
-    get_news(News),
+    get_news(S, News),
     random_happenings(priscilla, Happenings),
     flatten([
         Date,
@@ -195,8 +254,6 @@ priscilla_letter(Priscilla) :-
         "love",
         "Priscilla"], Priscilla).
 
-
-get_news("NEWS GOES HERE TODO").
 
 		 /*******************************
 		 * Global initialization.
@@ -302,4 +359,9 @@ available_action(S, A), collect_available_actions(S, L) <=>
      L = [A|L1],
      collect_available_actions(S, L1).
 collect_available_actions(_, L) <=> L = [].
+
+act(S, A) <=>
+      format(string(Str), 'we tried but couldnt ~w', [A]),
+      news(S, Str).
+
 
