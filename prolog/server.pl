@@ -20,7 +20,7 @@ server(Port) :-
                 [ port(Port)
                 ]).
 
-:- http_handler('/', http_reply_file('../web/html/index.html', []), []).
+:- http_handler('/', http_reply_file('../web/html/index.html', [unsafe(true)]), []).
 
 :- http_handler('/static/html/', http_reply_from_files('../web/html/', []), [prefix]).
 

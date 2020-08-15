@@ -35,7 +35,7 @@ const App = {
           m('.inventory-letter',
             m('h2', 'Inventory:'),
             m('ul', state.inventory.map(row =>
-              m('li', `* ${row.cnt >= 2 ? formatNumber(row.cnt)+' ' : ''}${row.item}, ${row.status}`)
+              m('li', `* ${row.desc}`)
             )),
           ),
         ),

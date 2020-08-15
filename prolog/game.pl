@@ -6,6 +6,14 @@
   current_date/1,
   has/3
 ]).
+/** <Module>
+ *
+ * And it is holy writ - things which have another status, such
+ * as gravid or sick, shall not have a count!
+ *
+ * So chickens might be fungible, but if you want sick chickens you have
+ * to make all of them  sick (presumably with an outside constraint)
+ */
 
 :- use_module(library(chr)).
 :- use_module(happenings).
@@ -32,10 +40,16 @@
   thing/3,               % session, type, status   an individual object
   count_things/3,        % session, type, Count    return the count of things
   set_init_inventory/1,  % session                 transient create the initial inventory
+  get_things/2,          % session, List get all the things in format needed by front end
 
   news/2,                % session, news           the news for this turn
   get_news/2.            % session, News           getter for this turns news
 
+%!  news(+Session:atom, +News:news) is det
+%
+%   News is either a real string, or the compound pic/1,
+%   whose argument is a relative URI to an image for the picture field.
+%
 get_state(S, Response) :-
     (   get_state_(S, Response)
     ->  true
@@ -45,19 +59,8 @@ get_state_(S, Response) :-
     b_setval(session, S),
     get_available_actions(S, Actions),
     maplist(annette_letter, Actions, Annette),
-    priscilla_letter(Priscilla),
-% TODO work downwards from here
-    random_permutation([
-        _{ item: chickens, cnt:42, status: well },
-        _{ item: chickens, cnt:42, status: sick },
-        _{ item: trailer, cnt: 1 , status: 'run down'},
-        _{ item: field, cnt: 1, status: 'planted in wheat, due to harvest in July'},
-        _{ item: 'wine press', cnt: 1, status: ok }], Inv),
-    append(Inv, [_{ item: money, cnt: 14000, status: ok}], Inventory),
-    random_member(Pic, [
-               '/static/img/pix/truck.jpg',
-               '/static/img/pix/turkeys.jpg',
-               '/static/img/pix/tractor.jpg']),
+    priscilla_letter(Priscilla, Pic),
+    get_things(S, Inventory),
     Response = _{
                    priscilla: Priscilla,
                    annette: Annette,
@@ -72,13 +75,29 @@ get_state_(S, Response) :-
 		 *  A thing is a unique item like a cow
 		 *  with a status (sick, ok, etc).
 		 *******************************/
+:- discontiguous fe_form/3, known_thing/1.
+
+known_thing(field).
+fe_form(field, X, _{ desc: "A fallow field"}) :-
+    planted{ crop: fallow} :< X.
+known_thing(trailer).
+fe_form(trailer, run_down,  _{ desc: "A run down airstream"}).
+fe_form(cow, X, _{ desc: "A cow"}) :-
+    livestock{ health: ok, gravid: -1} :< X.
+fe_form(cow, X, _{ desc: "A sick cow"}) :-
+    livestock{ cnt: 1, health: sick, gravid: -1} :< X.
+fe_form(cow, X, _{ desc: "A pregnant cow"}) :-
+    livestock{ cnt: 1, health: ok, gravid: N} :< X,
+    N > 0.
+fe_form(money, Amt, _{ desc: Desc }) :-
+    format(string(Desc) , 'Bank Balance: $~w', [Amt]).
 
 % and add the initial inventory
 set_init_inventory(S) \ thing(S, _, _) <=> true.
 set_init_inventory(S) <=>
-    thing(S, field, ok),   % don't want to trigger news, etc so add directly
+    thing(S, field, planted{ crop: fallow}),   % don't want to trigger news, etc so add directly
     thing(S, trailer, run_down),
-    thing(S, cow, ok),
+    thing(S, cow, livestock{ cnt: 1, health: ok, gravid: -1}),
     thing(S, money, 14000).
 
 has(Type, Op, Count) :-
@@ -123,6 +142,18 @@ cow_breeds(['Abondance', 'Devon', 'White Park', 'Belgian Blue',
                           'Swedish'
                          ]).
 
+:- chr_constraint collect_things/2, a_thing/3.
+get_things(S, _), thing(S, Type, Status) ==> a_thing(S, Type, Status).
+get_things(S, Things) <=> collect_things(S, Things).
+
+collect_things(S, Things), a_thing(S, Type, Status) <=>
+                 Things = [ThisThing | Tail],
+                 fe_form(Type, Status, ThisThing),
+                 collect_things(S, Tail).
+collect_things(_, Things) <=> Things = [].
+
+
+
 		 /*******************************
 		 *          Actions
 		 *
@@ -141,7 +172,7 @@ acty_done(_, _) <=> fail.
 
 :- discontiguous
   action_advice/2,   % Action, Advice   map action atoms to Advice realstrings
-  known_action/1.    % Action           this is a potential action
+  known_action/1.    % Action           this is a potential actionPhotos
 
 % set semantics for actions
 available_action(S, A) \ available_action(S, A) <=> true.
@@ -157,41 +188,62 @@ available_action(S, A) \ available_action(S, A) <=> true.
 known_action(game_state).
 act(_, game_state) <=> true.
 
-:- discontiguous  buy_price/2, buy_advice/2, buy_news/2.
+:- discontiguous  buy_price/2, buy_advice/2, buy_news/2,
+                  sell_thing/2, sell_price/2, sell_advice/2.
 
 buy_thing(buy_cow, cow).
 buy_price(buy_cow, 500).
 buy_advice(buy_cow, "I suggest you buy a cow. You can get a nice milker for around $500.").
-buy_news(buy_cow, News) :-
+buy_news(buy_cow, [News, pic('/static/img/pix/cow.jpg')]) :-
     cow_names(Names),
     random_member(Cow, Names),
     cow_breeds(Breeds),
     random_member(Breed, Breeds),
     format(string(News),
            'We bought a nice ~w. I\'m going to name her ~w', [Breed, Cow]).
-
 action_advice(buy_cow, "I suggest you buy a cow. You can get a nice milker for around $500.").
 
 known_action(buy_cow).
 get_available_actions(S, _),  thing(S, money, M) ==>  M > 500 | available_action(S, buy_cow).
-thing(S, money, M) \ act(S, buy_cow) <=>
-         thing(S, cow, ok),
+thing(S, money, M), act(S, buy_cow) <=>
+         thing(S, cow, livestock{ health: ok, gravid: -1}),
          NM is M - 500,  % mustnt fail here
          thing(S, money, NM),
          buy_news(buy_cow, News),
          news(S, News),
          days_go_by(S, 1).
 
+sell_thing(sell_cow, cow).
+sell_price(sell_cow, 300).
+sell_advice(sell_cow, "I suggest you sell your cow. It should fetch about $300.").
+sell_news(sell_cow, "Sold a cow.").
+
 known_action(sell_cow).
 action_advice(sell_cow, "I suggest you sell your cow. It should fetch about $300.").
-get_available_actions(S, _), thing(S, cow, ok) ==> available_action(S, sell_cow).
-thing(S, money, M) \ act(S, sell_cow), thing(S, cow, ok) <=>
+get_available_actions(S, _), thing(S, cow, Status) ==>
+     livestock{ health: ok} :< Status |
+     available_action(S, sell_cow).
+thing(S, money, M),  act(S, sell_cow), thing(S, cow, Status) <=>
+% care about status to make sure we sell the ok one, not the sick one,
+% if we have 2 cows
+     livestock{health: ok } :< Status,
      NewM is M + 300,
      thing(S, money, NewM),
+     sell_news(sell_cow, News),
+     news(S, News),
      days_go_by(S, 1).
 
 known_action(time_passes).
-action_advice(time_passes, "Tom brought me flowers today. He\'s so romantic!").
+action_advice(time_passes, Adv) :-
+     random_member(Adv, [
+                     "Tom brought me flowers today. He\'s so romantic!",
+                     "I so love our lovely home here.",
+                     "You can use butter if you don\'t have cold cream.",
+                     "Maybe I should try keeping bees",
+                     "There\'s nothing as good as eating things you\'ve grown yourself",
+                     "Tom bought a water wheel from an estate sale. Another project.",
+                     "Made rabbit stew last night. Really tasty with potatos from the garden."
+                   ]).
 get_available_actions(S, _) ==> available_action(S, time_passes).
 act(S, time_passes) <=> days_go_by(S, 7).
 
@@ -229,7 +281,9 @@ annette_letter(Action, _{action: Action,
               "Sincerely,",
               "Annette"], Letter).
 
-priscilla_letter(Priscilla) :-
+
+
+priscilla_letter(Priscilla, '/static/img/pix/wannabe.jpg') :-
     b_getval(session, S),
     \+ acty_done(S, start_letter_sent),
     !,
@@ -240,12 +294,12 @@ priscilla_letter(Priscilla) :-
         "Eeek, we\re so new to all this! What do you think we should do first?",
         "love",
         "Priscilla"].
-priscilla_letter(Priscilla) :-
+priscilla_letter(Priscilla, Pic) :-
     b_getval(session, S),
     acty_done(S, start_letter_sent),
     current_date(stringmo(Date)),
-    get_news(S, News),
     random_happenings(priscilla, Happenings),
+    gnap(S, News, Pic),
     flatten([
         Date,
         "Hey Annette",
@@ -253,6 +307,18 @@ priscilla_letter(Priscilla) :-
         Happenings,
         "love",
         "Priscilla"], Priscilla).
+
+gnap(S, News, Pic) :-
+    get_news(S, NewsAndPix),
+    flatten(NewsAndPix, FlatNewsAndPix),
+    partition([X]>>(X = pic(_)), FlatNewsAndPix, Pix, News),
+    (   random_member(pic(Pic), Pix)
+    ;   random_member(Pic, [
+               '/static/img/pix/truck.jpg',
+               '/static/img/pix/turkeys.jpg',
+               '/static/img/pix/tractor.jpg'])
+    ).
+
 
 
 		 /*******************************
@@ -365,3 +431,6 @@ act(S, A) <=>
       news(S, Str).
 
 
+% backup if we forgot the fe_form
+fe_form(Type, Status, Form) :-
+    format(string(Form), 'A ~w status ~q', [Type, Status]).
